@@ -22,6 +22,8 @@ $border-radius-large: 6px;
 $font-logo: 'Courgette', cursive;
 $font-body: 'Muli', sans-serif;
 
+$checkbox-size: 26px;
+
 
 
 // --------------------------------------------------
@@ -46,6 +48,10 @@ $font-body: 'Muli', sans-serif;
 	-webkit-border-radiu: $border-radius;
 	  -moz-border-radius: $border-radius;
 		   border-radius: $border-radius;
+}
+
+@mixin transitionAnimation() {
+	transition: all .25s ease;
 }
 
 
@@ -130,11 +136,20 @@ header {
 	}
 }
 
+#navHeader {
+	width: 100%;
+	z-index: 100;
+}
+
 
 
 // --------------------------------------------------
 // Todos Styles
 // --------------------------------------------------
+#content {
+	padding-bottom: 60px;
+}
+
 .task-count {
 	text-align: center;
 	margin-top: 40px;
@@ -144,52 +159,92 @@ header {
 	margin: 20px 0 60px;
 
 	.todo {
-		background-color: lighten($color-background, 5);
+		background-color: lighten($color-background, 3);
 		padding: 16px;
 		border-bottom: 1px solid rgba($color-border, .2);
-		@include boxShadow();
 		position: relative;
 		overflow: hidden;
 		cursor: pointer;
+		@include boxShadow();
+		@include transitionAnimation();
 
 		&:last-child {
 			border-bottom: none;
 		}
 
 		&:hover {
+			background-color: lighten($color-background, 4);
+
 			.delete {
 				right: 0;
 			}
 		}
 
 		.status-wrap {
+			width: 10%;
 			float: left;
 
 			.todo-status {
 				margin: 6px 20px 0 0;
 				outline: none;
+			}
 
+			input[type="checkbox"] {
+				display: none;
+			}
+
+			label {
+				cursor: pointer;
+			}
+
+			input[type="checkbox"] + label:before {
+				width: $checkbox-size;
+				height: $checkbox-size;
+				border: 1px solid #ffffff;
+				content: "\00a0";
+				display: inline-block;
+				// font: $checkbox-size/1em sans-serif;
+				background-color: $color-background;
+				margin: 0 20px 0 0;
+				padding:0;
+				vertical-align: top;
+				@include transitionAnimation();
+			}
+
+			input[type="checkbox"]:checked + label:before {
+				width: $checkbox-size;
+				height: $checkbox-size;
+				background: $color-background;
+				color: #666;
+				content: "\2713";
+				text-align: center;
+				font-size: $checkbox-size;
+			}
+
+			input[type="checkbox"]:checked + label:after {
+				font-weight: bold;
 			}
 
 		}
 
 		.task {
 			max-width: 80%;
+			font-size: 1.2em;
+			padding-top: 2px;
 			float: left;
 			margin: 0;
 		}
 
 		.delete {
-			width: 80px;
-			min-width: 10%;
-			min-height: 100%;
+			width: 10%;
+			height: 100%;
 			background-color: $color-error;
 			color: $color-background;
 			position: absolute;
 			right: -85px;
 			top: 0;
 			cursor: pointer;
-			transition: all .25s ease;
+			@include transitionAnimation();
 
 			&:hover {
 				background-color: darken($color-error, 10);
@@ -198,7 +253,8 @@ header {
 			p {
 				font-weight: bold;
 				text-align: center;
-				margin-top: 50%;
+				position: relative;
+				top: 50%;
 				transform: translateY(-50%);
 			}
 		}

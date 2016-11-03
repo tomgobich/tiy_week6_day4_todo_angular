@@ -25,6 +25,14 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<h1 class="logo">ToDoosy</h1>
+				</div>
+			</div>
+		</div>
+	</header>
+	<header id="navHeader">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12">
 					<ul class="navigation">
 						<li class="active">All</li>
 						<li>Current</li>
@@ -48,6 +56,7 @@
 					<div class="todo" ng-repeat="taskItem in task.taskList track by $index" ng-click="task.toggleIsComplete(taskItem)" ng-swipe-left="task.removeTask(taskItem)">
 						<div class="status-wrap">
 							<input ng-checked="taskItem.isComplete" type="checkbox" ng-model="taskItem.isComplete" ng-change="task.updateTaskList()" class="todo-status">
+							<label></label>
 						</div>
 						<h4 class="task">{{ taskItem.task }}</h4>
 						<div class="delete" ng-click="task.removeTask(taskItem)">
@@ -58,8 +67,6 @@
 			</div>
 		</div>
 	</div>
-
-	{{ task.taskList }}
 
 	<!--
 		Add New ToDo Form

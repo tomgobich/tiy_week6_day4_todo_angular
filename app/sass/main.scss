@@ -1,0 +1,240 @@
+@import 'bourbon/bourbon';
+
+* {margin: 0; padding: 0;}
+
+
+
+// --------------------------------------------------
+// Variables
+// --------------------------------------------------
+$color-background: 	   	#f4f4f4;
+$color-alt-background: 	#434A54;
+$color-border:			#DDD;
+$color-primary:        	#8CC152;
+$color-alt:            	#7DB1B1;
+$color-text:           	#333;
+$color-text-light:     	#767676;
+$color-error: 			#BF263C;
+
+$border-radius-small: 3px;
+$border-radius-large: 6px;
+
+$font-logo: 'Courgette', cursive;
+$font-body: 'Muli', sans-serif;
+
+
+
+// --------------------------------------------------
+// Mixins
+// --------------------------------------------------
+@mixin clearAfter() {
+	content:"";
+    display:table;
+    clear:both;
+}
+
+@mixin displayInlineBlock() {
+	display: inline-block;
+	vertical-align: top;
+}
+
+@mixin boxShadow() {
+	box-shadow: 1px 1px 3px rgba($color-alt-background, .1);
+}
+
+@mixin borderRadius($border-radius) {
+	-webkit-border-radiu: $border-radius;
+	  -moz-border-radius: $border-radius;
+		   border-radius: $border-radius;
+}
+
+
+
+// --------------------------------------------------
+// Global Styles
+// --------------------------------------------------
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+	height: 100%;
+	width: 100%;
+}
+
+body {
+	font-size: 16px;
+	font-family: $font-body;
+    background-color: $color-background;
+	color: $color-alt-background;
+	line-height: 1.6em;
+}
+
+a {
+	color: $color-alt;
+
+	&:hover {
+		color: darken($color-alt, 20);
+	}
+}
+
+img {
+	max-width: 100%;
+}
+
+[ng\:cloak], [ng-cloak], [data-ng-cloak], [x-ng-cloak], .ng-cloak, .x-ng-cloak {
+  display: none !important;
+}
+
+
+
+form {
+	input {
+		&.ng-dirty {
+			&.ng-invalid {
+				border: 1px solid $color-error;
+			}
+		}
+	}
+}
+
+
+
+// --------------------------------------------------
+// Header Styles
+// --------------------------------------------------
+header {
+	text-align: center;
+	background-color: $color-alt-background;
+	color: $color-background;
+
+	.logo {
+		text-transform: uppercase;
+		padding: 20px 0 2px;
+	}
+
+	.navigation {
+		text-align: center;
+		list-style: none;
+		margin: 20px 0 0;
+
+		li {
+			display: inline-block;
+			padding: 0 20px 5px;
+			border-bottom: 3px solid transparent;
+
+			&.active {
+				border-bottom: 3px solid $color-background;
+			}
+		}
+	}
+}
+
+
+
+// --------------------------------------------------
+// Todos Styles
+// --------------------------------------------------
+.task-count {
+	text-align: center;
+	margin-top: 40px;
+}
+
+.todos {
+	margin: 20px 0 60px;
+
+	.todo {
+		background-color: lighten($color-background, 5);
+		padding: 16px;
+		border-bottom: 1px solid rgba($color-border, .2);
+		@include boxShadow();
+		position: relative;
+		overflow: hidden;
+		cursor: pointer;
+
+		&:last-child {
+			border-bottom: none;
+		}
+
+		&:hover {
+			.delete {
+				right: 0;
+			}
+		}
+
+		.status-wrap {
+			float: left;
+
+			.todo-status {
+				margin: 6px 20px 0 0;
+				outline: none;
+
+			}
+
+		}
+
+		.task {
+			max-width: 80%;
+			float: left;
+			margin: 0;
+		}
+
+		.delete {
+			width: 80px;
+			min-width: 10%;
+			min-height: 100%;
+			background-color: $color-error;
+			color: $color-background;
+			position: absolute;
+			right: -85px;
+			top: 0;
+			cursor: pointer;
+			transition: all .25s ease;
+
+			&:hover {
+				background-color: darken($color-error, 10);
+			}
+
+			p {
+				font-weight: bold;
+				text-align: center;
+				margin-top: 50%;
+				transform: translateY(-50%);
+			}
+		}
+	}
+}
+
+
+
+// --------------------------------------------------
+// New ToDo Form Styles
+// --------------------------------------------------
+.new-todo {
+	width: 100%;
+	background-color: darken($color-alt-background, 5);
+	padding: 10px 20px;
+	position: fixed;
+	bottom: 0;
+	left: 0;
+
+	.new-todo-form {
+
+		.task-input {
+			width: 100%;
+			background-color: rgba($color-background, .2);
+			color: $color-background;
+			padding: 6px;
+			border: 1px solid $color-alt-background;
+			outline: none;
+		}
+	}
+}
+
+
+
+
+// --------------------------------------------------
+// Responsive Styles
+// --------------------------------------------------
+@import '_responsive.scss';

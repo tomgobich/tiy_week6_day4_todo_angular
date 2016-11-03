@@ -1,0 +1,11 @@
+@media screen and (max-width: 500px) {
+
+	body {
+		font-size: 12px;
+	}
+
+	.logo {
+		text-shadow: 3px 3px 0px darken($color-primary, 30);
+	}
+
+}

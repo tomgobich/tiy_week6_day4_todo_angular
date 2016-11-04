@@ -8,20 +8,31 @@
 
 
 
+			// ------------------------------------------------------------
+			// Name: set
+			// Abstract: Handling function to save to localStorage
+			// ------------------------------------------------------------
 			const set = function(name, data)
 			{
-				if(data === '' || data === undefined || data === null)
+				// Is the data bad?
+				if(data === undefined || data === null)
 				{
-					console.log('ERROR: The data you were trying to save in localStorage is not complete');
+					// Yes, notify of a warning
+					$.notify('WARNING: The data you were trying to save in localStorage is not complete, and your data was not saved. If this problem persists, please contact support');
 				}
 				else
 				{
+					// No, save it to localStorage
 					localStorage.setItem(name, JSON.stringify(data));
 				}
 			}
 
 
 
+			// ------------------------------------------------------------
+			// Name: get
+			// Abstract: Handling function to get from localStorage
+			// ------------------------------------------------------------
 			const get = function(name)
 			{
 				return JSON.parse(localStorage.getItem(name));

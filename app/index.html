@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Shopular</title>
+	<title>ToDoosy</title>
 
 	<!-- Bootstrap Styles -->
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.5/css/bootstrap.min.css" integrity="sha384-AysaV+vQoT3kOAXZkl02PThvDr8HYKPZhNT5h/CXfBThSRXQ6jW5DO2ekP5ViFdi" crossorigin="anonymous">
@@ -34,9 +34,9 @@
 			<div class="row">
 				<div class="col-xs-12">
 					<ul class="navigation">
-						<li class="active">All</li>
-						<li>Current</li>
-						<li>Completed</li>
+						<li ng-repeat="item in task.navigationItems"
+							ng-click="task.changeActiveNavigation(item)"
+							ng-class="{active : task.activeNavigation === item}">{{ item }}</li>
 					</ul>
 				</div>
 			</div>
@@ -50,10 +50,13 @@
 	<div id="content" class="container-fluid">
 		<div class="row">
 			<div class="col-xs-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2">
-				<h3 ng-if="task.taskList.length > 1" class="task-count">You have {{ task.taskList.length }} tasks to crush!</h3>
-				<h3 ng-if="task.taskList.length < 1" class="task-count">Add a new task below to get started!</h3>
+				<h3 class="task-count">{{ task.taskMessage }}</h3>
 				<div class="todos">
-					<div class="todo" ng-repeat="taskItem in task.taskList track by $index" ng-click="task.toggleIsComplete(taskItem)" ng-swipe-left="task.removeTask(taskItem)">
+					<p class="clear-all-complete" ng-if="task.completedTaskCount >= 1" ng-click="task.clearAllCompleted()">[Delete all completed tasks]</p>
+					<div class="todo"
+						 ng-repeat="taskItem in task.taskList | filter:{isComplete: task.isCompleteFilter} | orderBy:'creationDate' track by $index"
+						 ng-click="task.toggleIsComplete(taskItem)"
+						 ng-swipe-left="task.removeTask(taskItem)">
 						<div class="status-wrap">
 							<input ng-checked="taskItem.isComplete" type="checkbox" ng-model="taskItem.isComplete" ng-change="task.updateTaskList()" class="todo-status">
 							<label></label>
@@ -63,6 +66,7 @@
 							<p>X</p>
 						</div>
 					</div>
+					{{ results }}
 				</div>
 			</div>
 		</div>

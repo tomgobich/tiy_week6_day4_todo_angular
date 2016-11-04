@@ -178,7 +178,6 @@ header {
 		border-bottom: 1px solid rgba($color-border, .2);
 		position: relative;
 		overflow: hidden;
-		cursor: pointer;
 		@include boxShadow();
 		@include transitionAnimation();
 
@@ -218,7 +217,6 @@ header {
 				border: 1px solid #ffffff;
 				content: "\00a0";
 				display: inline-block;
-				// font: $checkbox-size/1em sans-serif;
 				background-color: $color-background;
 				margin: 0 20px 0 0;
 				padding:0;
@@ -260,6 +258,7 @@ header {
 			right: -85px;
 			top: 0;
 			cursor: pointer;
+			z-index: 80;
 			@include transitionAnimation();
 
 			&:hover {

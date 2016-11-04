@@ -209,6 +209,7 @@ header {
 
 			label {
 				cursor: pointer;
+				margin-bottom: 0;
 			}
 
 			input[type="checkbox"] + label:before {
@@ -232,7 +233,8 @@ header {
 				color: #666;
 				content: "\2713";
 				text-align: center;
-				font-size: $checkbox-size;
+				font-size: 34px;
+				padding: 2px 0px 0 0px;
 			}
 
 			input[type="checkbox"]:checked + label:after {
@@ -244,7 +246,7 @@ header {
 		.task {
 			max-width: 80%;
 			font-size: 1.2em;
-			padding-top: 2px;
+			padding-top: 5px;
 			float: left;
 			margin: 0;
 		}

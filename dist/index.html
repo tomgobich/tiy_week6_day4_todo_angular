@@ -76,9 +76,15 @@
 		Add New ToDo Form
 	-->
 	<div class="new-todo">
-		<form novalidate name="newToDoForm" class="new-todo-form" ng-submit="task.addNewTask(newToDoForm.$valid, newToDoForm)">
-			<input type="text" class="task-input" name="todo" ng-model="task.task" placeholder="Enter task..." required ng-minlength="3">
-		</form>
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-xs-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2">
+					<form novalidate name="newToDoForm" class="new-todo-form" ng-submit="task.addNewTask(newToDoForm.$valid, newToDoForm)">
+						<input type="text" class="task-input" name="todo" ng-model="task.task" placeholder="Enter task..." required ng-minlength="3">
+					</form>
+				</div>
+			</div>
+		</div>
 	</div>
 
 

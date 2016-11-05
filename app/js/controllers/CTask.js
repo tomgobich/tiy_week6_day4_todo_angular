@@ -127,16 +127,44 @@
 
 			// ------------------------------------------------------------
 			// Name: removeTask
-			// Abstract: Removes a task from the tasklist Array
+			// Abstract: Sets task as removed in taskList array
 			// ------------------------------------------------------------
 			vm.removeTask = function(taskItem)
 			{
+				// Save taskItem to allow undo of deletion
+				vm.lastRemovedTask = taskItem;
+
 				// Removes from the taskList array
 				vm.taskList = _.pull(vm.taskList, taskItem);
 
 				// Updates taskList dependant data
 				vm.updateTaskList();
+			}
 
+
+
+			// ------------------------------------------------------------
+			// Name: undoLastDelete
+			// Abstract: Add the last deleted item back onto the taskList
+			// ------------------------------------------------------------
+			vm.undoLastDelete = function()
+			{
+				if(vm.lastRemovedTask.length > 1)
+				{
+					// Concatenate onto array
+					vm.taskList = vm.taskList.concat(vm.lastRemovedTask);
+				}
+				else
+				{
+					// Push onto array
+					vm.taskList.push(vm.lastRemovedTask);
+				}
+
+				// Clear lastRemovedTask variable
+				vm.lastRemovedTask = null;
+
+				// Updates taskList dependant data
+				vm.updateTaskList();
 			}
 
 
@@ -147,9 +175,15 @@
 			// ------------------------------------------------------------
 			vm.clearAllCompleted = function()
 			{
+				vm.lastRemovedTask = _.remove(vm.taskList, function(element)
+				{
+					return element.isComplete == true;
+				});
+
 				// Clear all completed tasks
-				vm.taskList = _.remove(vm.taskList, function(element) {
-				  return element.isComplete == false;
+				vm.taskList = _.remove(vm.taskList, function(element)
+				{
+					return element.isComplete == false;
 				});
 
 				// Update taskList dependant data
@@ -195,14 +229,16 @@
 				{
 					// Get array of active tasks
 					case 'Current':
-						taskCount = _.remove(taskArray, function(element) {
-						  return element.isComplete == false;
+						taskCount = _.remove(taskArray, function(element)
+						{
+							return element.isComplete == false;
 						});
 						break;
 					// Get array of completed tasks
 					case 'Completed':
-						taskCount = _.remove(taskArray, function(element) {
-						  return element.isComplete == true;
+						taskCount = _.remove(taskArray, function(element)
+						{
+							return element.isComplete == true;
 						});
 						break;
 					// Use all tasks by default
@@ -304,6 +340,9 @@
 					name: 'Completed',
 				},
 			];
+
+			// View removed toggle
+			vm.lastRemovedTask	= null;
 
 			// Get active navigation
 			vm.activeNavigation = FTask.getActiveNavigation();

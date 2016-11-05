@@ -179,20 +179,32 @@ header {
 .todos {
 	margin: 20px 0 60px;
 
-	.clear-all-complete {
-		color: rgba($color-alt-background, .3);
-		text-align: right;
-		padding: 0 0 10px 15px;
-		margin: 0;
-		cursor: pointer;
-		@include transitionAnimation();
+	.todo-options {
+		width: 100%;
+		display: block;
+		clear: both;
 
-		&:hover {
-			color: $color-error;
+		.clear-all-complete,
+		.view-removed {
+			color: rgba($color-alt-background, .3);
+			float: right;
+			padding: 0 0 15px;
+			margin: 0;
+			cursor: pointer;
+			@include transitionAnimation();
+
+			&:hover {
+				color: $color-error;
+			}
+		}
+
+		.view-removed {
+			float: left;
 		}
 	}
 
 	.todo {
+		width: 100%;
 		background-color: lighten($color-background, 3);
 		padding: 16px;
 		border-bottom: 1px solid rgba($color-border, .2);

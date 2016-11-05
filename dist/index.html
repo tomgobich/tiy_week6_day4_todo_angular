@@ -55,13 +55,22 @@
 			<div class="col-xs-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2">
 				<h3 class="task-count">{{ task.taskMessage }}</h3>
 				<div class="todos">
-					<p 	class="clear-all-complete"
-						ng-if="task.navigationItems[2].count >= 1 && task.activeNavigation.name !== task.navigationItems[1].name"
-						ng-click="task.clearAllCompleted()">
-						[Delete all completed tasks]
-					</p>
+					<div class="todo-options">
+						<p 	class="view-removed"
+							ng-if="task.lastRemovedTask != null"
+							ng-click="task.undoLastDelete()">
+							Undo last delete
+						</p>
+						<p 	class="clear-all-complete"
+							ng-if="task.navigationItems[2].count >= 1 && task.activeNavigation.name !== task.navigationItems[1].name"
+							ng-click="task.clearAllCompleted()">
+							[Delete all completed tasks]
+						</p>
+					</div>
 					<div class="todo"
-						 ng-repeat="taskItem in task.taskList | filter:{isComplete: task.isCompleteFilter} | orderBy:'creationDate' track by $index">
+						 ng-repeat="taskItem in task.taskList |
+						 			filter:{isComplete: task.isCompleteFilter} |
+									orderBy:'creationDate' track by $index">
 						<div class="status-wrap" ng-click="task.toggleIsComplete(taskItem)">
 							<input 	type="checkbox"
 									class="todo-status"
@@ -75,7 +84,6 @@
 							<p>X</p>
 						</div>
 					</div>
-					{{ results }}
 				</div>
 			</div>
 		</div>

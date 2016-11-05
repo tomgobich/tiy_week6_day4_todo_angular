@@ -9,8 +9,12 @@
 		var vm = this;
 
 		var FILTER_ALL = '';
-		var FILTER_ACTIVE = '!true';
+		var FILTER_CURRENT = '!true';
 		var FILTER_COMPLETED = 'true';
+
+		var NAV_ALL_INDEX = 0;
+		var NAV_CURRENT_INDEX = 1;
+		var NAV_COMPLETED_INDEX = 2;
 
 		// ------------------------------------------------------------
 		// Name: changeActiveNavigation
@@ -38,13 +42,13 @@
 			// Default to all
 			var filter = FILTER_ALL;
 
-			switch (navItem) {
+			switch (navItem.name) {
 				// Display active tasks
-				case vm.navigationItems[1]:
-					filter = FILTER_ACTIVE;
+				case vm.navigationItems[NAV_CURRENT_INDEX].name:
+					filter = FILTER_CURRENT;
 					break;
 				// Display completed tasks
-				case vm.navigationItems[2]:
+				case vm.navigationItems[NAV_COMPLETED_INDEX].name:
 					filter = FILTER_COMPLETED;
 					break;
 			}
@@ -81,14 +85,20 @@
 		// Name: updateTaskList
 		// Abstract: Updates taskList dependant data and save in localStorage
 		// ------------------------------------------------------------
-		vm.updateTaskList = function () {
-			// Save in localStorage
-			FTask.setTaskList(vm.taskList);
+		vm.updateTaskList = function (state) {
+			// Is this being called on load?
+			if (state !== 'load') {
+				// No, save in localStorage
+				FTask.setTaskList(vm.taskList);
+			} else {
+				// Get the taskList from localStorage
+				vm.taskList = FTask.getTaskList();
+			}
 
 			// Update counts
-			vm.allTaskCount = vm.taskList.length;
-			vm.activeTaskCount = vm.getTaskCount(vm.navigationItems[1]);
-			vm.completedTaskCount = vm.getTaskCount(vm.navigationItems[2]);
+			vm.navigationItems[NAV_ALL_INDEX].count = vm.taskList.length;
+			vm.navigationItems[NAV_CURRENT_INDEX].count = vm.getTaskCount(vm.navigationItems[NAV_CURRENT_INDEX].name);
+			vm.navigationItems[NAV_COMPLETED_INDEX].count = vm.getTaskCount(vm.navigationItems[NAV_COMPLETED_INDEX].name);
 
 			// Update page message
 			vm.taskMessage = vm.getTaskMessage();
@@ -148,13 +158,13 @@
 
 			switch (taskStatus) {
 				// Get array of active tasks
-				case vm.navigationItems[1]:
+				case 'Current':
 					taskCount = _.remove(taskArray, function (element) {
 						return element.isComplete == false;
 					});
 					break;
 				// Get array of completed tasks
-				case vm.navigationItems[2]:
+				case 'Completed':
 					taskCount = _.remove(taskArray, function (element) {
 						return element.isComplete == true;
 					});
@@ -174,30 +184,44 @@
 		// Abstract: Get appropriate message based off task data
 		// ------------------------------------------------------------
 		vm.getTaskMessage = function () {
-			//		 1 active task					AND active navigation is All or Active
-			if (vm.activeTaskCount === 1 && vm.activeNavigation === vm.navigationItems[0] || vm.activeTaskCount === 1 && vm.activeNavigation === vm.navigationItems[1]) {
-				return 'You have ' + vm.activeTaskCount + ' task to crush!';
+			//		 1 Current task
+			//	AND  All OR Current active navigation
+			if (vm.navigationItems[NAV_CURRENT_INDEX].count === 1 && vm.activeNavigation.name === vm.navigationItems[NAV_ALL_INDEX].name || vm.navigationItems[NAV_CURRENT_INDEX].count === 1 && vm.activeNavigation.name === vm.navigationItems[NAV_CURRENT_INDEX].name) {
+				return 'You have ' + vm.navigationItems[NAV_CURRENT_INDEX].count + ' task to crush!';
 			}
-			//		 > 1 active task				AND active navigation is All or Active
-			else if (vm.activeTaskCount > 1 && vm.activeNavigation === vm.navigationItems[0] || vm.activeTaskCount > 1 && vm.activeNavigation === vm.navigationItems[1]) {
-					return 'You have ' + vm.activeTaskCount + ' tasks to crush!';
+
+			//		 > 1 Current task
+			//	AND  All OR Current active navigation
+			else if (vm.navigationItems[NAV_CURRENT_INDEX].count > 1 && vm.activeNavigation.name === vm.navigationItems[NAV_ALL_INDEX].name || vm.navigationItems[NAV_CURRENT_INDEX].count > 1 && vm.activeNavigation.name === vm.navigationItems[NAV_CURRENT_INDEX].name) {
+					return 'You have ' + vm.navigationItems[NAV_CURRENT_INDEX].count + ' tasks to crush!';
 				}
-				//		 < 1 active task				AND active navigation is All or Active			  AND >= 1 task overall
-				else if (vm.activeTaskCount < 1 && vm.activeNavigation === vm.navigationItems[0] && vm.allTaskCount >= 1 || vm.activeTaskCount < 1 && vm.activeNavigation === vm.navigationItems[1] && vm.allTaskCount >= 1) {
-						return 'You crushed all ' + vm.allTaskCount + ' of your tasks! Add more below!';
+
+				//		 < 1 Current task
+				//	AND  All OR Current active navigation
+				//	AND  >= 1 All task count
+				else if (vm.navigationItems[NAV_CURRENT_INDEX].count < 1 && vm.activeNavigation.name === vm.navigationItems[NAV_ALL_INDEX].name && vm.navigationItems[NAV_ALL_INDEX].count >= 1 || vm.navigationItems[NAV_CURRENT_INDEX].count < 1 && vm.activeNavigation.name === vm.navigationItems[NAV_CURRENT_INDEX].name && vm.navigationItems[NAV_ALL_INDEX].count >= 1) {
+						return 'You crushed all ' + vm.navigationItems[NAV_ALL_INDEX].count + ' of your tasks! Add more below!';
 					}
-					// 		 1 completed task				AND active navigation is completed
-					else if (vm.completedTaskCount === 1 && vm.activeNavigation === vm.navigationItems[2]) {
-							return 'You\'ve crushed ' + vm.completedTaskCount + ' task, keep it up!';
+
+					// 		 1 Completed task
+					// AND   Completed active navigation
+					else if (vm.navigationItems[NAV_COMPLETED_INDEX].count === 1 && vm.activeNavigation.name === vm.navigationItems[NAV_COMPLETED_INDEX].name) {
+							return 'You\'ve crushed ' + vm.navigationItems[NAV_COMPLETED_INDEX].count + ' task, keep it up!';
 						}
-						//		 > 1 completed task				AND active navigation is completed
-						else if (vm.completedTaskCount > 1 && vm.activeNavigation === vm.navigationItems[2]) {
-								return 'You\'ve crushed ' + vm.completedTaskCount + ' tasks, nice!';
+
+						//		 > 1 Completed task
+						// AND   Completed active navigation
+						else if (vm.navigationItems[NAV_COMPLETED_INDEX].count > 1 && vm.activeNavigation.name === vm.navigationItems[NAV_COMPLETED_INDEX].name) {
+								return 'You\'ve crushed ' + vm.navigationItems[NAV_COMPLETED_INDEX].count + ' tasks, nice!';
 							}
-							//		 < 1 completed task				AND active naviation is completed				  AND >= 1 task overall
-							else if (vm.completedTaskCount < 1 && vm.activeNavigation === vm.navigationItems[2] && vm.allTaskCount >= 1) {
+
+							//		 < 1 Completed task
+							// AND   Completed active navigation
+							// AND   >= 1 All task count
+							else if (vm.navigationItems[NAV_COMPLETED_INDEX].count < 1 && vm.activeNavigation.name === vm.navigationItems[NAV_COMPLETED_INDEX].name && vm.navigationItems[NAV_ALL_INDEX].count >= 1) {
 									return 'You haven\'t crushed any tasks yet, get crackin!';
 								}
+
 								// 		 Default
 								else {
 										return 'Add a new task below to get started!';
@@ -205,7 +229,14 @@
 		};
 
 		// Navigation items
-		vm.navigationItems = ['All', 'Current', 'Completed'];
+		// 		- Counts get added in updatedTaskList call
+		vm.navigationItems = [{
+			name: 'All'
+		}, {
+			name: 'Current'
+		}, {
+			name: 'Completed'
+		}];
 
 		// Get active navigation
 		vm.activeNavigation = FTask.getActiveNavigation();
@@ -213,15 +244,7 @@
 		// Get content filter for task list
 		vm.isCompleteFilter = vm.setTaskView(vm.activeNavigation);
 
-		// Get task list
-		vm.taskList = FTask.getTaskList();
-
-		// Get task status counts
-		vm.allTaskCount = vm.taskList.length;
-		vm.activeTaskCount = vm.getTaskCount(vm.navigationItems[1]);
-		vm.completedTaskCount = vm.getTaskCount(vm.navigationItems[2]);
-
-		// Get page message
-		vm.taskMessage = vm.getTaskMessage();
+		// Gets taskList and updates the data dependant on it
+		vm.updateTaskList('load');
 	});
 })();

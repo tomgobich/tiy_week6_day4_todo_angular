@@ -1,11 +1,180 @@
-@media screen and (max-width: 500px) {
+@media screen and (max-width: 502px) {
+
+	$checkbox-size: 18px;
+
 
 	body {
 		font-size: 12px;
 	}
 
-	.logo {
-		text-shadow: 3px 3px 0px darken($color-primary, 30);
+	// --------------------------------------------------
+	// Header Styles
+	// --------------------------------------------------
+	header {
+
+		.navigation {
+
+			li {
+				padding: 0 10px 5px;
+
+				.item-count {
+					width: 22px;
+					height: 22px;
+					font-size: calc(0.3em + 1vw);
+				}
+			}
+		}
 	}
 
+
+
+	// --------------------------------------------------
+	// Todos Styles
+	// --------------------------------------------------
+	.task-count {
+		font-size: 1.8em;
+	}
+
+	.todos {
+
+		.todo {
+
+			.status-wrap {
+
+				input[type="checkbox"] + label:before {
+					width: $checkbox-size;
+					height: $checkbox-size;
+					margin: 2px 10px 0 0;
+				}
+
+				input[type="checkbox"]:checked + label:before {
+					width: $checkbox-size;
+					height: $checkbox-size;
+					font-size: 22px;
+					padding: 0;
+				}
+			}
+		}
+	}
+
+}
+
+
+
+@media screen and (max-width: 330px) {
+
+	$checkbox-size: 18px;
+
+	// --------------------------------------------------
+	// Todos Styles
+	// --------------------------------------------------
+	.task-count {
+		font-size: 1.8em;
+	}
+
+	.todos {
+
+		.clear-all-complete {
+			color: rgba($color-alt-background, .3);
+			text-align: right;
+			padding: 0 0 10px 15px;
+			margin: 0;
+			cursor: pointer;
+			@include transitionAnimation();
+		}
+
+		.todo {
+			background-color: lighten($color-background, 3);
+			padding: 16px;
+			border-bottom: 1px solid rgba($color-border, .2);
+			position: relative;
+			overflow: hidden;
+			@include boxShadow();
+			@include transitionAnimation();
+
+			&:last-child {
+				border-bottom: none;
+			}
+
+			&:hover {
+				background-color: lighten($color-background, 4);
+
+				.delete {
+					right: 0;
+				}
+			}
+
+			.status-wrap {
+				width: 12%;
+				float: left;
+
+				.todo-status {
+					margin: 6px 20px 0 0;
+					outline: none;
+				}
+
+				input[type="checkbox"] {
+					display: none;
+				}
+
+				label {
+					cursor: pointer;
+					margin-bottom: 0;
+				}
+
+				input[type="checkbox"] + label:before {
+					width: $checkbox-size;
+					height: $checkbox-size;
+					border: 1px solid rgba($color-background, .3);
+					content: "\00a0";
+					display: inline-block;
+					background-color: $color-background;
+					margin: 2px 10px 0 0;
+					padding:0;
+					vertical-align: top;
+					@include transitionAnimation();
+				}
+
+				input[type="checkbox"]:checked + label:before {
+					width: $checkbox-size;
+					height: $checkbox-size;
+					font-size: 22px;
+					padding: 0;
+				}
+			}
+
+			.task {
+				max-width: 76%;
+				font-size: 1.2em;
+				padding-top: 5px;
+				float: left;
+				margin: 0;
+			}
+
+			.delete {
+				width: 14%;
+				height: 100%;
+				background-color: $color-error;
+				color: $color-background;
+				position: absolute;
+				right: -85px;
+				top: 0;
+				cursor: pointer;
+				z-index: 10;
+				@include transitionAnimation();
+
+				&:hover {
+					background-color: darken($color-error, 10);
+				}
+
+				p {
+					font-weight: bold;
+					text-align: center;
+					position: relative;
+					top: 50%;
+					transform: translateY(-50%);
+				}
+			}
+		}
+	}
 }

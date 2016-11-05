@@ -126,12 +126,32 @@ header {
 
 		li {
 			display: inline-block;
+			color: darken($color-background, 10);
 			padding: 0 20px 5px;
 			border-bottom: 3px solid transparent;
 			cursor: pointer;
+			@include transitionAnimation();
+
+			&:hover {
+				border-bottom: 3px solid darken($color-background, 10);
+			}
 
 			&.active {
+				color: $color-background;
 				border-bottom: 3px solid $color-background;
+			}
+
+			.item-count {
+				width: 27px;
+				height: 27px;
+				background-color: $color-background;
+				color: $color-alt-background;
+				font-size: calc(0.2em + 1vw);
+				text-align: center;
+				padding-top: 2px;
+				border-radius: 50%;
+				margin: -1px 0 0 5px;
+				float: right;
 			}
 		}
 	}
@@ -302,7 +322,6 @@ header {
 		}
 	}
 }
-
 
 
 

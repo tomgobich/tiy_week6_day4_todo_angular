@@ -106,11 +106,34 @@
 
 		// ------------------------------------------------------------
 		// Name: removeTask
-		// Abstract: Removes a task from the tasklist Array
+		// Abstract: Sets task as removed in taskList array
 		// ------------------------------------------------------------
 		vm.removeTask = function (taskItem) {
+			// Save taskItem to allow undo of deletion
+			vm.lastRemovedTask = taskItem;
+
 			// Removes from the taskList array
 			vm.taskList = _.pull(vm.taskList, taskItem);
+
+			// Updates taskList dependant data
+			vm.updateTaskList();
+		};
+
+		// ------------------------------------------------------------
+		// Name: undoLastDelete
+		// Abstract: Add the last deleted item back onto the taskList
+		// ------------------------------------------------------------
+		vm.undoLastDelete = function () {
+			if (vm.lastRemovedTask.length > 1) {
+				// Concatenate onto array
+				vm.taskList = vm.taskList.concat(vm.lastRemovedTask);
+			} else {
+				// Push onto array
+				vm.taskList.push(vm.lastRemovedTask);
+			}
+
+			// Clear lastRemovedTask variable
+			vm.lastRemovedTask = null;
 
 			// Updates taskList dependant data
 			vm.updateTaskList();
@@ -121,6 +144,10 @@
 		// Abstract: Clears all completed tasks
 		// ------------------------------------------------------------
 		vm.clearAllCompleted = function () {
+			vm.lastRemovedTask = _.remove(vm.taskList, function (element) {
+				return element.isComplete == true;
+			});
+
 			// Clear all completed tasks
 			vm.taskList = _.remove(vm.taskList, function (element) {
 				return element.isComplete == false;
@@ -237,6 +264,9 @@
 		}, {
 			name: 'Completed'
 		}];
+
+		// View removed toggle
+		vm.lastRemovedTask = null;
 
 		// Get active navigation
 		vm.activeNavigation = FTask.getActiveNavigation();

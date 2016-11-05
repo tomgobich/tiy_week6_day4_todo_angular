@@ -52,7 +52,7 @@
 			<div class="col-xs-12 col-sm-10 offset-sm-1 col-md-8 offset-md-2">
 				<h3 class="task-count">{{ task.taskMessage }}</h3>
 				<div class="todos">
-					<p class="clear-all-complete" ng-if="task.completedTaskCount >= 1" ng-click="task.clearAllCompleted()">[Delete all completed tasks]</p>
+					<p class="clear-all-complete" ng-if="task.completedTaskCount >= 1 && task.activeNavigation !== mv.navigationItems[1]" ng-click="task.clearAllCompleted()">[Delete all completed tasks]</p>
 					<div class="todo"
 						 ng-repeat="taskItem in task.taskList | filter:{isComplete: task.isCompleteFilter} | orderBy:'creationDate' track by $index"
 						 ng-swipe-left="task.removeTask(taskItem)">

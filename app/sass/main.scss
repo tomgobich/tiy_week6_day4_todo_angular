@@ -214,7 +214,7 @@ header {
 			input[type="checkbox"] + label:before {
 				width: $checkbox-size;
 				height: $checkbox-size;
-				border: 1px solid #ffffff;
+				border: 1px solid rgba($color-background, .3);
 				content: "\00a0";
 				display: inline-block;
 				background-color: $color-background;
@@ -258,7 +258,7 @@ header {
 			right: -85px;
 			top: 0;
 			cursor: pointer;
-			z-index: 80;
+			z-index: 10;
 			@include transitionAnimation();
 
 			&:hover {
@@ -288,6 +288,7 @@ header {
 	position: fixed;
 	bottom: 0;
 	left: 0;
+	z-index: 100;
 
 	.new-todo-form {
 

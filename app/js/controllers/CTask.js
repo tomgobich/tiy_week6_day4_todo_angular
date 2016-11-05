@@ -285,7 +285,7 @@
 				// 		 Default
 				else
 				{
-					return `Add a new task below to get started!`;
+					return `Don't let your day be a doosy, add a task below!`;
 				}
 			}
 

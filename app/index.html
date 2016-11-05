@@ -61,8 +61,7 @@
 						[Delete all completed tasks]
 					</p>
 					<div class="todo"
-						 ng-repeat="taskItem in task.taskList | filter:{isComplete: task.isCompleteFilter} | orderBy:'creationDate' track by $index"
-						 ng-swipe-left="task.removeTask(taskItem)">
+						 ng-repeat="taskItem in task.taskList | filter:{isComplete: task.isCompleteFilter} | orderBy:'creationDate' track by $index">
 						<div class="status-wrap" ng-click="task.toggleIsComplete(taskItem)">
 							<input 	type="checkbox"
 									class="todo-status"

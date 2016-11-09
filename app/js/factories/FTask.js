@@ -3,7 +3,7 @@
 	'use strict';
 
 	angular.module('app')
-		.factory('FTask', function(FApi, FLocalStorage)
+		.factory('FTask', function(FLocalStorage)
 		{
 
 			const LS_TASKLIST 			= 'taskList';

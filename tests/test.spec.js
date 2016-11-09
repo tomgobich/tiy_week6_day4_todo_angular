@@ -1,35 +1,19 @@
-describe('my app', function() {
+describe('ToDoosy Angular ToDo Web App Testing', function()
+{
   beforeEach(module('app'));
 
-  describe('user service', function() {
-    var $httpBackend, userService;
+  describe('CTask Testing', function()
+  {
+    var loginCtrl;
 
-    beforeEach(inject(function(_$httpBackend_, user) {
-      userService = user;
-      $httpBackend = _$httpBackend_;
-
-      $httpBackend
-        .whenPOST('/login')
-        .respond({
-          id: 13,
-          name: 'Jordan'
-        });
+    beforeEach(inject(function($controller)
+	{
+      vm = $controller('CTask');
     }));
 
-    it('should be able to log in a user', function(done) {
-      var result = userService.login({ email: '...', password: '...' });
-      result.should.be.a.object;
-      result.then.should.be.a.function;
-
-      result
-        .then(function(user) {
-          user.should.be.a.object;
-          user.id.should.equal(13);
-          done();
-        })
-        .catch(done);
-
-      $httpBackend.flush();
+    it('Should return back whether the task filter is set to All, Current, or Completed', function()
+	{
+      vm.setTaskView().should.be.a('string');
     });
 
   });

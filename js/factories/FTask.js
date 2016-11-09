@@ -4,7 +4,7 @@
 
 	'use strict';
 
-	angular.module('app').factory('FTask', function (FApi, FLocalStorage) {
+	angular.module('app').factory('FTask', function (FLocalStorage) {
 
 		var LS_TASKLIST = 'taskList';
 		var LS_TASKVIEW = 'taskView';
